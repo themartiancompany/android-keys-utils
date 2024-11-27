@@ -1,0 +1,47 @@
+#!/system/bin/env bash
+#
+# SPDX-License-Identifier: AGPL-3.0
+
+_system_volume_down_key_disable() {
+  local \
+    _msg=() \
+    _results=()
+  _results=(  $( \
+    find \
+      /system \
+      -type \
+        "f" \
+      -name \
+        "gpio-keys.kl"
+  )
+  if [[ "${_results[*]}" == "" ]]; then
+    echo \
+      "No GPIO keys layout file found"
+    return \
+      1
+  elif [[ "${#_results[@]}" == "1" ]]; then
+    _disable_key \
+      "${_results}" \
+      "VOLUME_DOWN"
+  elif (( "${#_results[@]}" >= "2" )); then
+    _msg=(
+      "Found more than one GPIO keys" \
+      "layout file, it's ambiguous" \
+      "so no operation is performed."
+    )
+    echo \
+      "${_msg[*]}"
+  fi
+}
+
+_disable_key() {
+  local \
+    _gpio_file="${1}" \
+    _key="${2}"
+  sed \
+    -e \
+    "/${_key}/ s/^#*/#/" \
+    -i \
+    "${_gpio_file}"
+}
+
