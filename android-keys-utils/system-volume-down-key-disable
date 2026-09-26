@@ -44,4 +44,3 @@ _disable_key() {
     -i \
     "${_gpio_file}"
 }
-

@@ -69,10 +69,11 @@ _usage() {
 Disable the volume down key.
 
 Usage:
-  $(_get "app" "name")
+  ${app_name}
   options:
      -h                   This message.
      -v                   Enable verbose output
+
 ENDUSAGETEXT
   _printf \
     '%s\n' \
@@ -95,7 +96,7 @@ while \
     c) override_color="y" ;;
     v) override_quiet="n" ;;
     h|?) _set_overrides && \
-	 _usage \
+         _usage \
            0 ;;
     *)
     _msg_error \
@@ -108,7 +109,7 @@ while \
   esac
 done
 shift \
-  $(( \
+  $((
     OPTIND - 1 \
   ))
 
